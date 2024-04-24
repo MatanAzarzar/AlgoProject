@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Model",
+            "request": "launch",
+            "mainClass": "Model",
+            "projectName": "Puzzels_15c54bd5"
+        },
+        {
+            "type": "java",
+            "name": "Puzzle",
+            "request": "launch",
+            "mainClass": "Puzzles.Puzzle",
+            "projectName": "Puzzels_15c54bd5"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "Puzzels_15c54bd5"
+        }
+    ]
+}
