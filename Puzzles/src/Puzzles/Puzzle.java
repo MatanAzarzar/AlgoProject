@@ -205,28 +205,33 @@ public class Puzzle {
         }
     }
 
-    public void performMove(int move) {
+    public int performMove(int move) {
+        int movedTile = -1; // This will hold the number which is moved
         switch (move) {
             case UP:
                 if (emptyRow > 0) {
+                    movedTile = board[emptyRow - 1][emptyCol];
                     swap(emptyRow, emptyCol, emptyRow - 1, emptyCol);
                     emptyRow--;
                 }
                 break;
             case DOWN:
                 if (emptyRow < size - 1) {
+                    movedTile = board[emptyRow + 1][emptyCol];
                     swap(emptyRow, emptyCol, emptyRow + 1, emptyCol);
                     emptyRow++;
                 }
                 break;
             case LEFT:
                 if (emptyCol > 0) {
+                    movedTile = board[emptyRow][emptyCol - 1];
                     swap(emptyRow, emptyCol, emptyRow, emptyCol - 1);
                     emptyCol--;
                 }
                 break;
             case RIGHT:
                 if (emptyCol < size - 1) {
+                    movedTile = board[emptyRow][emptyCol + 1];
                     swap(emptyRow, emptyCol, emptyRow, emptyCol + 1);
                     emptyCol++;
                 }
@@ -234,27 +239,39 @@ public class Puzzle {
             default:
                 System.out.println("Invalid move. Please use 0 (Up), 1 (Down), 2 (Left), or 3 (Right).");
         }
+        return movedTile; // Return the tile that moved
     }
-
+    
     private void swap(int row1, int col1, int row2, int col2) {
         int temp = board[row1][col1];
         board[row1][col1] = board[row2][col2];
         board[row2][col2] = temp;
     }
 
-    public List<Puzzle> generatePossibleMoves() {
-        List<Puzzle> possibleMoves = new ArrayList<>();
-
+    public List<PuzzleMovePair> generatePossibleMoves() {
+        List<PuzzleMovePair> possibleMoves = new ArrayList<>();
         for (int move = 0; move < 4; move++) {
             if (isValidMove(move)) {
                 Puzzle nextPuzzle = new Puzzle(this);
-                nextPuzzle.performMove(move);
-                possibleMoves.add(nextPuzzle);
+                int movedTile = nextPuzzle.performMove(move);
+                if (movedTile != -1) {
+                    possibleMoves.add(new PuzzleMovePair(nextPuzzle, movedTile));
+                }
             }
         }
-
         return possibleMoves;
     }
+    
+
+    public class PuzzleMovePair {
+    public Puzzle puzzle;
+    public int movedTile;
+
+    public PuzzleMovePair(Puzzle puzzle, int movedTile) {
+        this.puzzle = puzzle;
+        this.movedTile = movedTile;
+    }
+}
 
     public int[] getGoalCoordinates(int value) {
         int res = 0;
@@ -273,17 +290,16 @@ public class Puzzle {
 
     @Override
     public String toString() {
-        String puzzleToString = "";
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                puzzleToString += ((board[i][j] != 0 ? board[i][j] : "-") + "\t");
+                builder.append(String.format("%2d ", board[i][j]));
             }
-            puzzleToString += "\n";
+            builder.append("\n");
         }
-        puzzleToString += "\n";
-        return puzzleToString;
+        return builder.toString();
     }
-
+    
     @Override
     public int hashCode() {
         final int prime = 31;

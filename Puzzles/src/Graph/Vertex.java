@@ -53,6 +53,10 @@ public class Vertex {
         return distance + heuristicValue;
     }
 
+    public int getID() {
+        return ID; // Add this method to get the vertex ID.
+    }
+
     @Override
     public String toString() {
         return String.valueOf(ID);
